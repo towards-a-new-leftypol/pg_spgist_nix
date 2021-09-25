@@ -21,6 +21,10 @@ stdenv.mkDerivation rec {
       postgresql
     ];
 
+    patches = [
+      ./op_symbol.patch
+    ];
+
     src = "${repo}/bktree";
 
     installPhase = ''

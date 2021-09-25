@@ -1,0 +1,235 @@
+diff --git a/bktree--1.0.sql b/bktree--1.0.sql
+index 8a10fc0..8bb644d 100644
+--- a/bktree--1.0.sql
++++ b/bktree--1.0.sql
+@@ -78,7 +78,7 @@ CREATE OR REPLACE FUNCTION bktree_get_distance(int8, int8) RETURNS int8 AS
+ 'MODULE_PATHNAME','bktree_get_distance'
+ LANGUAGE C IMMUTABLE STRICT;
+ 
+-CREATE OPERATOR <-> (
++CREATE OPERATOR <=> (
+ 	LEFTARG = int8,
+ 	RIGHTARG = int8,
+ 	PROCEDURE = bktree_get_distance
+diff --git a/sql/int8.sql b/sql/int8.sql
+index a1a2a79..3ab1e56 100644
+--- a/sql/int8.sql
++++ b/sql/int8.sql
+@@ -18,10 +18,10 @@ SELECT count(*) FROM int8tmp_2 WHERE a >= 464571291354841;
+ 
+ SELECT count(*) FROM int8tmp_2 WHERE a >  464571291354841;
+ 
+-SELECT a, a <-> 464571291354841 FROM int8tmp_2 WHERE a <@ (464571291354841, 4);
++SELECT a, a <=> 464571291354841 FROM int8tmp_2 WHERE a <@ (464571291354841, 4);
+ 
+ EXPLAIN (COSTS OFF)
+-SELECT a, a <-> 464571291354841 FROM int8tmp_2 WHERE a <@ (464571291354841, 4);
++SELECT a, a <=> 464571291354841 FROM int8tmp_2 WHERE a <@ (464571291354841, 4);
+ 
+ \copy int8tmp_2 from 'data/incr.data'
+ 
+@@ -40,32 +40,32 @@ SELECT count(*) FROM int8tmp_2 WHERE a >  464571291354841::int8;
+ SELECT count(*) FROM int8tmp_2 WHERE a  = 464571291354841::int8;
+ 
+ EXPLAIN (COSTS OFF)
+-SELECT a, a <-> 464571291354841, a <@ (464571291354841, 4), int64_to_bitstring(a) FROM int8tmp_2 WHERE a <@ (464571291354841, 4);
++SELECT a, a <=> 464571291354841, a <@ (464571291354841, 4), int64_to_bitstring(a) FROM int8tmp_2 WHERE a <@ (464571291354841, 4);
+ EXPLAIN (COSTS OFF)
+-SELECT a, a <-> 464571291354841, a <@ (464571291354841, 4), int64_to_bitstring(a) FROM int8tmp_2 WHERE a <@ (464571291354841, 4) ORDER BY a <-> 464571291354841 ASC;
++SELECT a, a <=> 464571291354841, a <@ (464571291354841, 4), int64_to_bitstring(a) FROM int8tmp_2 WHERE a <@ (464571291354841, 4) ORDER BY a <=> 464571291354841 ASC;
+ 
+-SELECT a, a <->  10, a <@ ( 10, 4), int64_to_bitstring(a) FROM int8tmp_2 WHERE a <@ ( 10, 4) ORDER BY a <->  10 ASC, a ASC;
+-SELECT a, a <-> 100, a <@ (100, 4), int64_to_bitstring(a) FROM int8tmp_2 WHERE a <@ (100, 4) ORDER BY a <-> 100 ASC, a ASC;
+-SELECT a, a <->   2, a <@ (  2, 4), int64_to_bitstring(a) FROM int8tmp_2 WHERE a <@ (  2, 4) ORDER BY a <->   2 ASC, a ASC;
++SELECT a, a <=>  10, a <@ ( 10, 4), int64_to_bitstring(a) FROM int8tmp_2 WHERE a <@ ( 10, 4) ORDER BY a <=>  10 ASC, a ASC;
++SELECT a, a <=> 100, a <@ (100, 4), int64_to_bitstring(a) FROM int8tmp_2 WHERE a <@ (100, 4) ORDER BY a <=> 100 ASC, a ASC;
++SELECT a, a <=>   2, a <@ (  2, 4), int64_to_bitstring(a) FROM int8tmp_2 WHERE a <@ (  2, 4) ORDER BY a <=>   2 ASC, a ASC;
+ 
+-SELECT a, a <->  10, a <@ ( 10, 1), int64_to_bitstring(a) FROM int8tmp_2 WHERE a <@ ( 10, 1) ORDER BY a <->  10 ASC, a ASC;
+-SELECT a, a <-> 100, a <@ (100, 1), int64_to_bitstring(a) FROM int8tmp_2 WHERE a <@ (100, 1) ORDER BY a <-> 100 ASC, a ASC;
+-SELECT a, a <->   2, a <@ (  2, 1), int64_to_bitstring(a) FROM int8tmp_2 WHERE a <@ (  2, 1) ORDER BY a <->   2 ASC, a ASC;
++SELECT a, a <=>  10, a <@ ( 10, 1), int64_to_bitstring(a) FROM int8tmp_2 WHERE a <@ ( 10, 1) ORDER BY a <=>  10 ASC, a ASC;
++SELECT a, a <=> 100, a <@ (100, 1), int64_to_bitstring(a) FROM int8tmp_2 WHERE a <@ (100, 1) ORDER BY a <=> 100 ASC, a ASC;
++SELECT a, a <=>   2, a <@ (  2, 1), int64_to_bitstring(a) FROM int8tmp_2 WHERE a <@ (  2, 1) ORDER BY a <=>   2 ASC, a ASC;
+ 
+-SELECT a, a <->  10, a <@ ( 10, 2), int64_to_bitstring(a) FROM int8tmp_2 WHERE a <@ ( 10, 2) ORDER BY a <->  10 ASC, a ASC;
+-SELECT a, a <-> 100, a <@ (100, 2), int64_to_bitstring(a) FROM int8tmp_2 WHERE a <@ (100, 2) ORDER BY a <-> 100 ASC, a ASC;
+-SELECT a, a <->   2, a <@ (  2, 2), int64_to_bitstring(a) FROM int8tmp_2 WHERE a <@ (  2, 2) ORDER BY a <->   2 ASC, a ASC;
++SELECT a, a <=>  10, a <@ ( 10, 2), int64_to_bitstring(a) FROM int8tmp_2 WHERE a <@ ( 10, 2) ORDER BY a <=>  10 ASC, a ASC;
++SELECT a, a <=> 100, a <@ (100, 2), int64_to_bitstring(a) FROM int8tmp_2 WHERE a <@ (100, 2) ORDER BY a <=> 100 ASC, a ASC;
++SELECT a, a <=>   2, a <@ (  2, 2), int64_to_bitstring(a) FROM int8tmp_2 WHERE a <@ (  2, 2) ORDER BY a <=>   2 ASC, a ASC;
+ 
+ EXPLAIN (COSTS OFF)
+-SELECT a, a <->  10, a <@ ( 10, 1), int64_to_bitstring(a) FROM int8tmp_2 WHERE a <@ ( 10, 1) ORDER BY a <->  10 ASC, a ASC;
++SELECT a, a <=>  10, a <@ ( 10, 1), int64_to_bitstring(a) FROM int8tmp_2 WHERE a <@ ( 10, 1) ORDER BY a <=>  10 ASC, a ASC;
+ EXPLAIN (COSTS OFF)
+-SELECT a, a <-> 100, a <@ (100, 1), int64_to_bitstring(a) FROM int8tmp_2 WHERE a <@ (100, 1) ORDER BY a <-> 100 ASC, a ASC;
++SELECT a, a <=> 100, a <@ (100, 1), int64_to_bitstring(a) FROM int8tmp_2 WHERE a <@ (100, 1) ORDER BY a <=> 100 ASC, a ASC;
+ EXPLAIN (COSTS OFF)
+-SELECT a, a <->   2, a <@ (  2, 1), int64_to_bitstring(a) FROM int8tmp_2 WHERE a <@ (  2, 1) ORDER BY a <->   2 ASC, a ASC;
++SELECT a, a <=>   2, a <@ (  2, 1), int64_to_bitstring(a) FROM int8tmp_2 WHERE a <@ (  2, 1) ORDER BY a <=>   2 ASC, a ASC;
+ 
+ EXPLAIN (COSTS OFF)
+-SELECT a, a <->  10, a <@ ( 10, 2), int64_to_bitstring(a) FROM int8tmp_2 WHERE a <@ ( 10, 2) ORDER BY a <->  10 ASC, a ASC;
++SELECT a, a <=>  10, a <@ ( 10, 2), int64_to_bitstring(a) FROM int8tmp_2 WHERE a <@ ( 10, 2) ORDER BY a <=>  10 ASC, a ASC;
+ EXPLAIN (COSTS OFF)
+-SELECT a, a <-> 100, a <@ (100, 2), int64_to_bitstring(a) FROM int8tmp_2 WHERE a <@ (100, 2) ORDER BY a <-> 100 ASC, a ASC;
++SELECT a, a <=> 100, a <@ (100, 2), int64_to_bitstring(a) FROM int8tmp_2 WHERE a <@ (100, 2) ORDER BY a <=> 100 ASC, a ASC;
+ EXPLAIN (COSTS OFF)
+-SELECT a, a <->   2, a <@ (  2, 2), int64_to_bitstring(a) FROM int8tmp_2 WHERE a <@ (  2, 2) ORDER BY a <->   2 ASC, a ASC;
++SELECT a, a <=>   2, a <@ (  2, 2), int64_to_bitstring(a) FROM int8tmp_2 WHERE a <@ (  2, 2) ORDER BY a <=>   2 ASC, a ASC;
+diff --git a/sql/test_1.sql b/sql/test_1.sql
+index adb8d56..fbe5390 100644
+--- a/sql/test_1.sql
++++ b/sql/test_1.sql
+@@ -30,17 +30,17 @@ SELECT count(*) FROM test1_tmp_table WHERE a  >= 7::int8;
+ -- Search value
+ SELECT int64_to_bitstring(5);
+ -- Now the actual searches.
+-SELECT a, a <@ (5, 1), a <-> 5, int64_to_bitstring(a) FROM test1_tmp_table WHERE  a <@ (5, 1);
+-SELECT a, a <@ (5, 2), a <-> 5, int64_to_bitstring(a) FROM test1_tmp_table WHERE  a <@ (5, 2);
+-SELECT a, a <@ (5, 2), a <-> 5, int64_to_bitstring(a) FROM test1_tmp_table WHERE  a <@ (5, 3);
+-SELECT a, a <@ (5, 4), a <-> 5, int64_to_bitstring(a) FROM test1_tmp_table WHERE  a <@ (5, 4);
++SELECT a, a <@ (5, 1), a <=> 5, int64_to_bitstring(a) FROM test1_tmp_table WHERE  a <@ (5, 1);
++SELECT a, a <@ (5, 2), a <=> 5, int64_to_bitstring(a) FROM test1_tmp_table WHERE  a <@ (5, 2);
++SELECT a, a <@ (5, 2), a <=> 5, int64_to_bitstring(a) FROM test1_tmp_table WHERE  a <@ (5, 3);
++SELECT a, a <@ (5, 4), a <=> 5, int64_to_bitstring(a) FROM test1_tmp_table WHERE  a <@ (5, 4);
+ 
+ 
+ EXPLAIN (COSTS OFF)
+-SELECT a, a <@ (5, 1), a <-> 5, int64_to_bitstring(a) FROM test1_tmp_table WHERE  a <@ (5, 1);
++SELECT a, a <@ (5, 1), a <=> 5, int64_to_bitstring(a) FROM test1_tmp_table WHERE  a <@ (5, 1);
+ EXPLAIN (COSTS OFF)
+-SELECT a, a <@ (5, 2), a <-> 5, int64_to_bitstring(a) FROM test1_tmp_table WHERE  a <@ (5, 2);
++SELECT a, a <@ (5, 2), a <=> 5, int64_to_bitstring(a) FROM test1_tmp_table WHERE  a <@ (5, 2);
+ EXPLAIN (COSTS OFF)
+-SELECT a, a <@ (5, 2), a <-> 5, int64_to_bitstring(a) FROM test1_tmp_table WHERE  a <@ (5, 3);
++SELECT a, a <@ (5, 2), a <=> 5, int64_to_bitstring(a) FROM test1_tmp_table WHERE  a <@ (5, 3);
+ EXPLAIN (COSTS OFF)
+-SELECT a, a <@ (5, 4), a <-> 5, int64_to_bitstring(a) FROM test1_tmp_table WHERE  a <@ (5, 4);
++SELECT a, a <@ (5, 4), a <=> 5, int64_to_bitstring(a) FROM test1_tmp_table WHERE  a <@ (5, 4);
+diff --git a/sql/test_2.sql b/sql/test_2.sql
+index 45f397e..2c43c89 100644
+--- a/sql/test_2.sql
++++ b/sql/test_2.sql
+@@ -29,26 +29,26 @@ SELECT count(*) FROM test2_tmp_table WHERE a  <= 7::int8;
+ SELECT count(*) FROM test2_tmp_table WHERE a  >= 7::int8;
+ 
+ -- Now the actual searches.
+-SELECT a, a <@ (0, 1), a <-> 0, int64_to_bitstring(a) FROM test2_tmp_table WHERE  a <@ (0, 1) ORDER BY a;
+-SELECT a, a <@ (0, 2), a <-> 0, int64_to_bitstring(a) FROM test2_tmp_table WHERE  a <@ (0, 2) ORDER BY a;
+-SELECT a, a <@ (0, 2), a <-> 0, int64_to_bitstring(a) FROM test2_tmp_table WHERE  a <@ (0, 3) ORDER BY a;
+-SELECT a, a <@ (0, 4), a <-> 0, int64_to_bitstring(a) FROM test2_tmp_table WHERE  a <@ (0, 4) ORDER BY a;
++SELECT a, a <@ (0, 1), a <=> 0, int64_to_bitstring(a) FROM test2_tmp_table WHERE  a <@ (0, 1) ORDER BY a;
++SELECT a, a <@ (0, 2), a <=> 0, int64_to_bitstring(a) FROM test2_tmp_table WHERE  a <@ (0, 2) ORDER BY a;
++SELECT a, a <@ (0, 2), a <=> 0, int64_to_bitstring(a) FROM test2_tmp_table WHERE  a <@ (0, 3) ORDER BY a;
++SELECT a, a <@ (0, 4), a <=> 0, int64_to_bitstring(a) FROM test2_tmp_table WHERE  a <@ (0, 4) ORDER BY a;
+ 
+ 
+ -- Search value
+ SELECT int64_to_bitstring(1023);
+ -- Now the actual searches.
+-SELECT a, a <@ (1023, 1), a <-> 1023, int64_to_bitstring(a) FROM test2_tmp_table WHERE  a <@ (1023, 1) ORDER BY a;
+-SELECT a, a <@ (1023, 2), a <-> 1023, int64_to_bitstring(a) FROM test2_tmp_table WHERE  a <@ (1023, 2) ORDER BY a;
+-SELECT a, a <@ (1023, 2), a <-> 1023, int64_to_bitstring(a) FROM test2_tmp_table WHERE  a <@ (1023, 3) ORDER BY a;
+-SELECT a, a <@ (1023, 4), a <-> 1023, int64_to_bitstring(a) FROM test2_tmp_table WHERE  a <@ (1023, 4) ORDER BY a;
++SELECT a, a <@ (1023, 1), a <=> 1023, int64_to_bitstring(a) FROM test2_tmp_table WHERE  a <@ (1023, 1) ORDER BY a;
++SELECT a, a <@ (1023, 2), a <=> 1023, int64_to_bitstring(a) FROM test2_tmp_table WHERE  a <@ (1023, 2) ORDER BY a;
++SELECT a, a <@ (1023, 2), a <=> 1023, int64_to_bitstring(a) FROM test2_tmp_table WHERE  a <@ (1023, 3) ORDER BY a;
++SELECT a, a <@ (1023, 4), a <=> 1023, int64_to_bitstring(a) FROM test2_tmp_table WHERE  a <@ (1023, 4) ORDER BY a;
+ 
+ 
+ EXPLAIN (COSTS OFF)
+-SELECT a, a <@ (5, 1), a <-> 5, int64_to_bitstring(a) FROM test2_tmp_table WHERE  a <@ (5, 1) ORDER BY a;
++SELECT a, a <@ (5, 1), a <=> 5, int64_to_bitstring(a) FROM test2_tmp_table WHERE  a <@ (5, 1) ORDER BY a;
+ EXPLAIN (COSTS OFF)
+-SELECT a, a <@ (5, 2), a <-> 5, int64_to_bitstring(a) FROM test2_tmp_table WHERE  a <@ (5, 2) ORDER BY a;
++SELECT a, a <@ (5, 2), a <=> 5, int64_to_bitstring(a) FROM test2_tmp_table WHERE  a <@ (5, 2) ORDER BY a;
+ EXPLAIN (COSTS OFF)
+-SELECT a, a <@ (5, 2), a <-> 5, int64_to_bitstring(a) FROM test2_tmp_table WHERE  a <@ (5, 3) ORDER BY a;
++SELECT a, a <@ (5, 2), a <=> 5, int64_to_bitstring(a) FROM test2_tmp_table WHERE  a <@ (5, 3) ORDER BY a;
+ EXPLAIN (COSTS OFF)
+-SELECT a, a <@ (5, 4), a <-> 5, int64_to_bitstring(a) FROM test2_tmp_table WHERE  a <@ (5, 4) ORDER BY a;
++SELECT a, a <@ (5, 4), a <=> 5, int64_to_bitstring(a) FROM test2_tmp_table WHERE  a <@ (5, 4) ORDER BY a;
+diff --git a/sql/utilities.sql b/sql/utilities.sql
+index 5fb1235..e7172a5 100644
+--- a/sql/utilities.sql
++++ b/sql/utilities.sql
+@@ -56,66 +56,66 @@ SELECT bitstring_to_int64('wat');
+ 
+ SELECT
+ 		bitstring_to_int64('0000000000000000000000000000000000000000000000000000000000000000')
+-	<->
++	<=>
+ 		bitstring_to_int64('0000000000000000000000000000000000000000000000000000000000000000')
+ ;
+ 
+ SELECT
+ 		bitstring_to_int64('0000000000000000000000000000000000000000000000000000000000000000')
+-	<->
++	<=>
+ 		bitstring_to_int64('0000000000000000000000000000000000000000000000000000000000000001')
+ ;
+ 
+ SELECT
+ 		bitstring_to_int64('0000000000000000000000000000000000000000000000000000000000000000')
+-	<->
++	<=>
+ 		bitstring_to_int64('1000000000000000000000000000000000000000000000000000000000000000')
+ ;
+ 
+ SELECT
+ 		bitstring_to_int64('1000000000000000000000000000000000000000000000000000000000000000')
+-	<->
++	<=>
+ 		bitstring_to_int64('1000000000000000000000000000000000000000000000000000000000000000')
+ ;
+ 
+ SELECT
+ 		bitstring_to_int64('0000000000000000000000000000000000000000000000000000000000000000')
+-	<->
++	<=>
+ 		bitstring_to_int64('1000000000000000000000000000000000000000000000000000000000000001')
+ ;
+ 
+ SELECT
+ 		bitstring_to_int64('0000000000000000000000000000000000000000000000000000000000000000')
+-	<->
++	<=>
+ 		bitstring_to_int64('0000000000000000000000000000000000000000000000000000000000000011')
+ ;
+ 
+ SELECT
+ 		bitstring_to_int64('0000000000000000000000000000000000000000000000000000000000000000')
+-	<->
++	<=>
+ 		bitstring_to_int64('0111111111111111111111111111111111111111111111111111111111111111')
+ ;
+ 
+ SELECT
+ 		bitstring_to_int64('0000000000000000000000000000000000000000000000000000000000000000')
+-	<->
++	<=>
+ 		bitstring_to_int64('1111111111111111111111111111111111111111111111111111111111111111')
+ ;
+ 
+ SELECT
+ 		bitstring_to_int64('1111111111111111111111111111111111111111111111111111111111111110')
+-	<->
++	<=>
+ 		bitstring_to_int64('1111111111111111111111111111111111111111111111111111111111111111')
+ ;
+ 
+ SELECT
+ 		bitstring_to_int64('0111111111111111111111111111111111111111111111111111111111111111')
+-	<->
++	<=>
+ 		bitstring_to_int64('1111111111111111111111111111111111111111111111111111111111111111')
+ ;
+ 
+ SELECT
+ 		bitstring_to_int64('0111111111111111111111111111111111111111111111111111111111111110')
+-	<->
++	<=>
+ 		bitstring_to_int64('1111111111111111111111111111111111111111111111111111111111111111')
+ ;
