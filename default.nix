@@ -1,5 +1,5 @@
-# with import <nixpkgs> {};
-{ stdenv, fetchFromGitHub, postgresql }:
+with import <nixpkgs> {};
+#{ stdenv, fetchFromGitHub, postgresql }:
 
 let
   name = "pg-spgist_hamming";
@@ -33,5 +33,6 @@ stdenv.mkDerivation rec {
       cp *.so      $out/lib
       cp *.sql     $out/share/postgresql/extension
       cp *.control $out/share/postgresql/extension
+      cp sql/init.sql $out
     '';
 }
