@@ -1,5 +1,5 @@
-with import <nixpkgs> {};
-#{ stdenv, fetchFromGitHub, postgresql }:
+#with import <nixpkgs> {};
+{ stdenv, fetchFromGitHub, postgresql }:
 
 let
   name = "pg-spgist_hamming";
