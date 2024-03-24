@@ -1,5 +1,5 @@
-#with import <nixpkgs> {};
-{ stdenv, fetchFromGitHub, postgresql }:
+# with import <nixpkgs> {};
+{ stdenv, fetchFromGitHub, pkgs }:
 
 let
   name = "pg-spgist_hamming";
@@ -18,7 +18,7 @@ stdenv.mkDerivation rec {
     version = "1.0";
 
     buildInputs = [
-      postgresql
+      pkgs.postgresql_16
     ];
 
     patches = [
